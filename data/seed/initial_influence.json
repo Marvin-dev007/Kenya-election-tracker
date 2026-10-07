@@ -1,0 +1,75 @@
+{
+  "regions": [
+    {
+      "model": "regions.region",
+      "pk": 1,
+      "fields": {
+        "name": "Nairobi",
+        "code": "KE-01",
+        "region_type": "county",
+        "center_lat": -1.286389,
+        "center_lng": 36.817223,
+        "population": 4397073,
+        "area_sqkm": 696
+      }
+    },
+    {
+      "model": "regions.region",
+      "pk": 2,
+      "fields": {
+        "name": "Kisumu",
+        "code": "KE-02",
+        "region_type": "county",
+        "center_lat": -0.091702,
+        "center_lng": 34.767956,
+        "population": 1134424,
+        "area_sqkm": 2085
+      }
+    },
+    {
+      "model": "regions.region",
+      "pk": 3,
+      "fields": {
+        "name": "Mombasa",
+        "code": "KE-03",
+        "region_type": "county",
+        "center_lat": -4.043477,
+        "center_lng": 39.668206,
+        "population": 1208333,
+        "area_sqkm": 212
+      }
+    }
+  ],
+  "parties": [
+    {
+      "model": "candidates.party",
+      "pk": 1,
+      "fields": {
+        "name": "United Democratic Alliance",
+        "abbreviation": "UDA",
+        "color": "#006600",
+        "founded_date": "2021-12-12"
+      }
+    },
+    {
+      "model": "candidates.party",
+      "pk": 2,
+      "fields": {
+        "name": "Orange Democratic Movement",
+        "abbreviation": "ODM",
+        "color": "#FF6600",
+        "founded_date": "2005-08-28"
+      }
+    },
+    {
+      "model": "candidates.party",
+      "pk": 3,
+      "fields": {
+        "name": "Jubilee Party",
+        "abbreviation": "JUBILEE",
+        "color": "#FF0000",
+        "founded_date": "2016-09-08"
+      }
+    }
+  ]
+}

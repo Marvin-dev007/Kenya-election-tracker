@@ -1,0 +1,84 @@
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/build:/usr/share/nginx/html
+      - ./static:/static
+      - ./media:/media
+    depends_on:
+      - backend
+    networks:
+      - election_network
+
+  postgres:
+    image: postgis/postgis:15-3.4
+    environment:
+      POSTGRES_DB: election_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - election_network
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - election_network
+
+  backend:
+    build: ./backend
+    command: gunicorn election_tracker.wsgi:application --bind 0.0.0.0:8000
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - DEBUG=False
+    volumes:
+      - ./static:/app/static
+      - ./media:/app/media
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - election_network
+
+  celery:
+    build: ./backend
+    command: celery -A election_tracker worker -l info
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - election_network
+
+  celery-beat:
+    build: ./backend
+    command: celery -A election_tracker beat -l info
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - election_network
+
+networks:
+  election_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
